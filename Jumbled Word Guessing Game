@@ -1,0 +1,25 @@
+words = ["Guess","Higher","Close","Jeans","Timer","Stopwatch","Watch","Suitcase","Mango"]
+word = random.choice(words).upper()
+jumbled = list(word)
+random.shuffle(jumbled)
+final = "".join(jumbled)
+count=0
+guess=""
+while guess!=word:
+    count+=1
+    print()
+    print(f"The jumbled word is {final}")
+    guess = input("Guess the word: ").upper()
+
+    if guess!=word and count==3:
+        print()
+        print("GAME OVER! YOU LOST!")
+        print(f"The original word was {word}")
+        break
+    elif guess!=word:
+        print()
+        print("Your guess is wrong!")
+        print(f"{3-count} guesses are left!")
+else:
+    print()
+    print(f"You guessed it right in {count} guesses!!!")
