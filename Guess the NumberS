@@ -1,0 +1,24 @@
+num = random.randint(1,100)
+guess = 0
+count = 0
+start = time.time()
+while num!=guess:
+    count+=1
+    guess = int(input("Guess the number: [1-100]"))
+    if guess>100 or guess<0:
+        print("Invalid Input! Please enter the number between 1 to 100!")
+    elif num<guess:
+        print("Guess Lower!",end=" ")
+        if guess-num>10:
+            print("You are far away!")
+        else:
+            print("You are very close!")
+    elif num>guess:
+        print("Guess Higher!",end=" ")
+        if num-guess>10:
+            print("You are far away!")
+        else:
+            print("You are very close!")
+else:
+    end = time.time()
+    print(f"Congrats! You guessed it right in {count} guesses and {round(end-start,2)} seconds!")
