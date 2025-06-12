@@ -1,0 +1,86 @@
+import datetime
+class ATM:
+    def __init__(self,name):
+        self.name=name.title()
+        self.__balance=0
+        self.__create_pin()
+        self.sr=0
+        self.__create_passbook()
+        
+    def deposit(self,amt):
+        if self.__check_pins():
+            if amt>0:
+                self.__balance+=amt
+                print(f"{amt}.Rs has been successfully credited to your account !!")
+                print(f"Current balance is {self.__balance}/-")
+
+                self.sr+=1
+                with open(self.name+".txt","a") as f:
+                    f.write(f"{self.sr}     {datetime.datetime.now()}     Credited     Rs{amt}      {self.__balance}/-\n")
+                    
+            else:
+                print("Please enter valid input")
+
+    def withdraw(self,amt):
+        if self.__check_pins():
+            if amt%100 !=0:
+                print("Please enter an amount that is a multiple of 100.")
+            elif amt<=0:
+                print("Please enter a valid amount.")
+            elif amt>self.__balance:
+                print("Insufficient balance.")
+            else:
+                self.__balance-=amt
+                print(f"{amt}.Rs has been successfully debited from your account !!")
+                print(f"Current balance is {self.__balance}/-")
+
+                self.sr+=1
+                with open(self.name+".txt","a") as f:
+                    f.write(f"{self.sr}     {datetime.datetime.now()}     Debited      Rs{amt}      {self.__balance}/-\n")
+
+    def check_balance(self):
+        if self.__check_pins():
+            print(f"{datetime.datetime.now()} Current balance: Rs.{self.__balance}")
+    
+    def __create_pin(self):
+        pin=input("Enter your pin: ")
+        check=input("Re-enter your pin: ")
+        if not pin.isdigit():
+            print("The pin must contain only numbers")
+        elif len(pin)!=4:
+            print("The pin must contain 4 digits")
+        elif(pin!=check):
+            print("The PINs do not match. Please try again.")
+        else:
+            self.__pin=int(pin)
+            print("Pin created successfully")
+
+    def __check_pins(self):
+        attempts=3
+        while True:
+            check_pin=int(input("Enter your pin: "))
+            if self.__pin == check_pin:
+                return True
+            else:
+                attempts-=1
+                print("Incorrect PIN. Please try again.")
+                if attempts==0:
+                    print("Your card has been blocked due to multiple failed attempts.")
+                    print("No attempts remaining.")
+                    return False
+                print("Please try again.")
+                print(f"You have {attempts} attempt(s) left.")
+
+    def __create_passbook(self):
+        with open(self.name+".txt","w") as f:
+            f.write(f"Username: {self.name}\n")
+            f.write("Sr.  Time                           Status       Amount          Balance\n")
+
+    def print_passbook(self):
+        if self.__check_pins():
+            with open(self.name+".txt","r") as f:
+                print(f.read())
+
+    
+        
+            
